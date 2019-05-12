@@ -10,12 +10,13 @@ The _Planetary Data System (version 4) Information Model_ (NASA/PDS4 IM) is an a
 The VESPA team proposes a LDD for the EPNcore keyword dictionary, including eventually the mappting with existing NASA/PDS4 keywords, so that the NASA/PDS4 search interface can be queried using the EPNcore model. 
 
 ## Design Options
-The VESPA-EPNcore has been designed as a flat model, so that it can easily be represented into a simple table.  
+The VESPA-EPNcore has been designed as a flat model, so that it can easily be represented into a simple table. Several design options for the LDD implementation have been explored and are available as branches in this repository:
+* _[option 1](/epn-vespa/PDS4-EPNcore/tree/option1)_ implements the VESPA-EPNcore model as presented in the VESPA reference document. 
+* _[option 2](/epn-vespa/PDS4-EPNcore/tree/option2)_ implements the VESPA-Epncore model with a nested keyword structure. 
+* _option 3_ is not implemented (and will not be). It initially was planned to implement the VESPA-EPNcore model with several sub-LDDs.
+* _[option 4](/epn-vespa/PDS4-EPNcore/tree/option4)_ implements the VESPA-Epncore model with explicit spatial coordinate keywords.
+* _[option 5](/epn-vespa/PDS4-EPNcore/tree/option5)_ implements the VESPA-Epncore model with explicit spatial coordinate keywords and adds the option to choose a single value or min/max interval for numerical fields.
 
-Several design options have been explored and are available as branches in this repository:
-* [option 1](/epn-vespa/PDS4-EPNcore/tree/option1) implements the VESPA-EPNcore model as presented in the VESPA reference document. 
-* [option 2](/epn-vespa/PDS4-EPNcore/tree/option2) implements the VESPA-Epncore model with a nested keyword structure. 
-* option 3 is not implemented (and will not be). It initially was planned to implement the VESPA-EPNcore model with several sub-LDDs.
-* [option 4](/epn-vespa/PDS4-EPNcore/tree/option4) implements the VESPA-Epncore model with explicit spatial coordinate keywords.
-* [option 5](/epn-vespa/PDS4-EPNcore/tree/option5) implements the VESPA-Epncore model with explicit spatial coordinate keywords and adds the option to choose a single value or min/max interval for numerical fields.
+In each branch, the [Features](Features.md) file presents the implemented features and limitations. 
 
+The current [develop](/epn-vespa/PDS4-EPNcore/tree/develop) is following [option 5](/epn-vespa/PDS4-EPNcore/tree/option5) design. 
