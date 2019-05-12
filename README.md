@@ -11,12 +11,12 @@ The VESPA team proposes a LDD for the EPNcore keyword dictionary, including even
 
 ## Design Options
 The VESPA-EPNcore has been designed as a flat model, so that it can easily be represented into a simple table. Several design options for the LDD implementation have been explored and are available as branches in this repository:
-* _[option 1](/epn-vespa/PDS4-EPNcore/tree/option1)_ implements the VESPA-EPNcore model as presented in the VESPA reference document. 
-* _[option 2](/epn-vespa/PDS4-EPNcore/tree/option2)_ implements the VESPA-Epncore model with a nested keyword structure. 
+* _[option 1](https://github.com/epn-vespa/PDS4-EPNcore/tree/option1)_ implements the VESPA-EPNcore model as presented in the VESPA reference document. 
+* _[option 2](https://github.com/epn-vespa/PDS4-EPNcore/tree/option2)_ implements the VESPA-Epncore model with a nested keyword structure. 
 * _option 3_ is not implemented (and will not be). It initially was planned to implement the VESPA-EPNcore model with several sub-LDDs.
-* _[option 4](/epn-vespa/PDS4-EPNcore/tree/option4)_ implements the VESPA-Epncore model with explicit spatial coordinate keywords.
-* _[option 5](/epn-vespa/PDS4-EPNcore/tree/option5)_ implements the VESPA-Epncore model with explicit spatial coordinate keywords and adds the option to choose a single value or min/max interval for numerical fields.
+* _[option 4](https://github.com/epn-vespa/PDS4-EPNcore/tree/option4)_ implements the VESPA-Epncore model with explicit spatial coordinate keywords.
+* _[option 5](https://github.com/epn-vespa/PDS4-EPNcore/tree/option5)_ implements the VESPA-Epncore model with explicit spatial coordinate keywords and adds the option to choose a single value or min/max interval for numerical fields.
 
 In each branch, the [Features](Features.md) file presents the implemented features and limitations. 
 
-The current [develop](/epn-vespa/PDS4-EPNcore/tree/develop) branch is following [option 5](/epn-vespa/PDS4-EPNcore/tree/option5) design. 
+The current [develop](https://github.com/epn-vespa/PDS4-EPNcore/tree/develop) branch is following [option 5](https://github.com/epn-vespa/PDS4-EPNcore/tree/option5) design. 
