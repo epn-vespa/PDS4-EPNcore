@@ -19,4 +19,4 @@ The VESPA-EPNcore has been designed as a flat model, so that it can easily be re
 
 In each branch, the [Features](Features.md) file presents the implemented features and limitations. 
 
-The current [develop](/epn-vespa/PDS4-EPNcore/tree/develop) is following [option 5](/epn-vespa/PDS4-EPNcore/tree/option5) design. 
+The current [develop](/epn-vespa/PDS4-EPNcore/tree/develop) branch is following [option 5](/epn-vespa/PDS4-EPNcore/tree/option5) design. 
