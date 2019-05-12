@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="Ingest_LDD_VESPA_EPN_1x8000.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<VESPA_EPNcore_Parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://pds.nasa.gov/pds4/epn/v1"
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/epn/v1 Ingest_LDD_VESPA_EPN_1x8000.xsd">
+    <granule>
+        <granule_uid>o4bda5kaq_1D</granule_uid>
+        <granule_gid>1D_spectra</granule_gid>
+        <obs_id>o4bda5kaq</obs_id>
+        <service_title>APIS</service_title>
+    </granule>
+    <data_description>
+        <dataproduct_type>sp</dataproduct_type>
+        <measurement_type>phot.flux.density;em.UV.100-200nm</measurement_type>
+        <processing_level>5</processing_level>
+    </data_description>
+    <target>
+        <target_class>planet</target_class>
+        <target_name>Saturn</target_name>
+        <target_region>magnetosphere</target_region>
+        <feature_name>planetary aurorae</feature_name>
+    </target>
+    <observation_system>
+        <instrument_host_name>hst</instrument_host_name>
+        <instrument_name>STIS</instrument_name>
+        <filter>52X0.5</filter>
+    </observation_system>
+    <time_axis>
+        <time_range>
+            <time_min unit="julian day">2450787.7134216</time_min>
+            <time_max unit="julian day">2450787.72499787</time_max>
+        </time_range>
+        <time_exp>
+            <time_exp_min unit="s">1000.1899</time_exp_min>
+            <time_exp_max unit="s">1000.1899</time_exp_max>
+        </time_exp>
+    </time_axis>
+    <spectral_axis>
+        <spectral_range>
+            <spectral_range_min unit="Hz">1.73290438150289E15</spectral_range_min>
+            <spectral_range_max unit="Hz">2.62975840350877E15</spectral_range_max>
+        </spectral_range>
+        <spectral_sampling_step>
+            <spectral_sampling_step_min unit="Hz">5.1334325879012403E18</spectral_sampling_step_min>
+            <spectral_sampling_step_max unit="Hz">5.1334325879012403E18</spectral_sampling_step_max>
+        </spectral_sampling_step>
+        <spectral_resolution>
+            <spectral_resolution_min unit="Hz">5.1334325879012403E18</spectral_resolution_min>
+            <spectral_resolution_max unit="Hz">5.1334325879012403E18</spectral_resolution_max>
+        </spectral_resolution>
+    </spectral_axis>
+    <spatial_axes>
+        <spatial_frame_type>none</spatial_frame_type>
+    </spatial_axes>
+    <observation_geometry>
+        <phase_angle>
+            <phase_min unit="deg">5.198522</phase_min>
+            <phase_max unit="deg">5.198522</phase_max>
+        </phase_angle>
+    </observation_geometry>
+    <access>
+        <access_url>http://voparis-srv.obspm.fr/vo/planeto/apis/dataset/Bastet/Saturn_-_1997_11_Oct-05_Dec/o4bda5kaq_1D.fits</access_url>
+        <access_format>image/fits</access_format>
+        <access_estsize unit="DN">22000</access_estsize>
+        <thumbnail_url>http://voparis-srv.obspm.fr/vo/planeto/apis/dataset/Bastet/Saturn_-_1997_11_Oct-05_Dec/o4bda5kaq_1D_small.jpg</thumbnail_url>
+    </access>
+    <dates>
+        <creation_date>2016-10-10T00:00:00</creation_date>
+        <modification_date>2016-10-11T14:57:56</modification_date>
+    </dates>
+    <reference>
+        <publisher>PADC on behalf of LESIA</publisher>
+        <bib_reference>
+            <bib_reference_bibcode>2015A&amp;C....11..138L</bib_reference_bibcode>
+        </bib_reference>
+        <external_link>http://apis.obspm.fr/spip.php?page=observation&amp;id=bas_4512</external_link>
+    </reference>
+    <APIS_Extension_Parameters xmlns="http://pds.nasa.gov/pds4/epn/v1">
+        <obs_mode>TIME-TAG</obs_mode>
+        <detector_name>FUV-MAMA</detector_name>
+        <opt_elem>G140L</opt_elem>
+        <detector_orientation unit="deg">2.99998</detector_orientation>
+        <measurement_unit>erg /s /cm**2 /angstrom /arcsec**2</measurement_unit>
+        <proposal_id>6854</proposal_id>
+        <proposal_pi>Trauger J.</proposal_pi>
+        <proposal_title>SATURN'S AURORA AND AIRGLOW</proposal_title>
+        <platesc unit="arcsec/pixel">0.024600023</platesc>
+        <campaign>Saturn - 1997 11 Oct-05 Dec</campaign>
+        <target_apparent_radius unit="arcsec">9.4049324</target_apparent_radius>
+        <north_pole_position unit="deg">2.96</north_pole_position>
+    </APIS_Extension_Parameters>
+</VESPA_EPNcore_Parameters>

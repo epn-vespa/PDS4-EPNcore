@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="Ingest_LDD_VESPA_EPN_1x8000.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<VESPA_EPNcore_Parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://pds.nasa.gov/pds4/epn/v1"
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/epn/v1 Ingest_LDD_VESPA_EPN_1x8000.xsd">
+    <granule>
+        <granule_uid>od9u27dqq_x2d</granule_uid>
+        <granule_gid>original_data</granule_gid>
+        <obs_id>od9u27dqq</obs_id>
+        <service_title>APIS</service_title>
+    </granule>
+    <data_description>
+        <dataproduct_type>im</dataproduct_type>
+        <measurement_type>phot.count;obs.image</measurement_type>
+        <processing_level>3</processing_level>
+    </data_description>
+    <target>
+        <target_class>planet</target_class>
+        <target_name>Saturn</target_name>
+        <target_region>magnetosphere</target_region>
+        <feature_name>planetary aurorae</feature_name>
+    </target>
+    <observation_system>
+        <instrument_host_name>hst</instrument_host_name>
+        <instrument_name>STIS</instrument_name>
+        <filter>F25SRF2</filter>
+    </observation_system>
+    <time_axis>
+        <time_range>
+            <time_min unit="julian day">2457973.19303846</time_min>
+            <time_max unit="julian day">2457973.21455625</time_max>
+        </time_range>
+        <time_exp>
+            <time_exp_min unit="s">1859.1371</time_exp_min>
+            <time_exp_max unit="s">1859.1371</time_exp_max>
+        </time_exp>
+    </time_axis>
+    <spectral_axis>
+        <spectral_range>
+            <spectral_range_min unit="Hz">1.68422729213483E15</spectral_range_min>
+            <spectral_range_max unit="Hz">2.342128578125E15</spectral_range_max>
+        </spectral_range>
+        <spectral_sampling_step>
+            <spectral_sampling_step_min unit="Hz">-6.74512457870035E23</spectral_sampling_step_min>
+            <spectral_sampling_step_max unit="Hz">-6.74512457870035E23</spectral_sampling_step_max>
+        </spectral_sampling_step>
+        <spectral_resolution>
+            <spectral_resolution_min unit="Hz">-6.74512457870035E23</spectral_resolution_min>
+            <spectral_resolution_max unit="Hz">-6.74512457870035E23</spectral_resolution_max>
+        </spectral_resolution>
+    </spectral_axis>
+    <spatial_axes>
+        <spatial_frame_type>none</spatial_frame_type>
+    </spatial_axes>
+    <observation_geometry>
+        <phase_angle>
+            <phase_min unit="deg">4.6750002</phase_min>
+            <phase_max unit="deg">4.6750002</phase_max>
+        </phase_angle>
+    </observation_geometry>
+    <other_location>
+        <ra_dec>
+            <ra_min unit="deg">260.49838</ra_min>
+            <ra_max unit="deg">260.49838</ra_max>
+            <dec_min unit="deg">-21.914244</dec_min>
+            <dec_max unit="deg">-21.914244</dec_max>
+        </ra_dec>
+    </other_location>
+    <access>
+        <access_url>http://voparis-srv.obspm.fr/vo/planeto/apis/dataset/Bastet/Saturn_-_2017_14_Feb-09_Sept/od9u27dqq_x2d.fits</access_url>
+        <access_format>image/fits</access_format>
+        <access_estsize unit="DN">22000</access_estsize>
+        <thumbnail_url>http://voparis-srv.obspm.fr/vo/planeto/apis/dataset/Bastet/Saturn_-_2017_14_Feb-09_Sept/od9u27dqq_x2d_small.jpg</thumbnail_url>
+    </access>
+    <dates>
+        <creation_date>2018-04-10T00:00:00</creation_date>
+        <modification_date>2018-04-10T14:38:35</modification_date>
+    </dates>
+    <reference>
+        <publisher>PADC on behalf of LESIA</publisher>
+        <bib_reference>
+            <bib_reference_bibcode>2015A&amp;C....11..138L</bib_reference_bibcode>
+        </bib_reference>
+        <external_link>http://apis.obspm.fr/spip.php?page=observation&amp;id=bas_8165</external_link>
+    </reference>
+    <APIS_Extension_Parameters xmlns="http://pds.nasa.gov/pds4/epn/v1">
+        <obs_mode>TIME-TAG</obs_mode>
+        <detector_name>FUV-MAMA</detector_name>
+        <opt_elem>MIRFUV</opt_elem>
+        <detector_orientation unit="deg">49.7072</detector_orientation>
+        <measurement_unit>COUNTS</measurement_unit>
+        <proposal_id>14811</proposal_id>
+        <proposal_pi>Lamy L.</proposal_pi>
+        <proposal_title>The Grand Finale : probing the origin of Saturn s aurorae with HST
+            oservations simultaneous to Cassini polar measurements</proposal_title>
+        <platesc unit="arcsec/pixel">0.024741968</platesc>
+        <campaign>Saturn - 2017 14 Feb-09 Sept</campaign>
+        <target_apparent_radius unit="arcsec">8.8117799</target_apparent_radius>
+        <north_pole_position unit="deg">4.54</north_pole_position>
+        <target_primary_hemisphere>North</target_primary_hemisphere>
+        <target_secondary_hemisphere>South</target_secondary_hemisphere>
+    </APIS_Extension_Parameters>
+</VESPA_EPNcore_Parameters>
