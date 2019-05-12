@@ -1,0 +1,2636 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1A00.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+
+<Ingest_LDD xmlns="http://pds.nasa.gov/pds4/pds/v1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1A00.xsd">
+    <name>EPN VESPA Local Dictionary 2.0</name>
+    <ldd_version_id>1-8.0.0</ldd_version_id>
+    <full_name>Baptiste Cecconi</full_name>
+    <steward_id>epn</steward_id>
+    <namespace_id>epn</namespace_id>
+    <comment>
+        This EPN VESPA LDD version propose a flat architecture corresponding to EPN VESPA attributes.
+        
+        Features:
+        - all EPN VESPA attributes at same level in XML label
+
+        Current issues:
+        - c1min, c1max, c2min, c2max, c3min and c3max can't have @unit. This will be problematic for mapping 
+        with other LDDs, and make validation more complex.
+        - s_region is provided is an STC string. No validation process. 
+        - bib_reference should be split in various subtypes for validation
+        - particle_spectral_*_min and particle_spectral_*_max units can't be described (no @unit)
+        - access_format missing ASCII_Mime_Type value_data_type
+        - attributes missing _min/_max split: subsolar_longitude, subsolar_latitude, subobserver_longitude, 
+        subobserver_latitude, ra, dec, radial_distance, altitude_fromshape, mass, sideral_rotation_period, 
+        mean_radius, equatorial_radius, polar_radius
+    </comment>
+    <last_modification_date_time>2018-07-18</last_modification_date_time>
+    
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+    <!-- ++++++++ mandatory attributes ++++++++ -->
+    
+    <!-- Granule  attributes -->
+    
+    <DD_Attribute> <!-- granule_uid  [mandatory] -->
+        <name>granule_uid</name>
+        <version_id>2.0</version_id>
+        <local_identifier>granule_uid</local_identifier>
+        <nillable_flag>false</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Unique granule ID in data service.
+            There can be only one product associated to a granule (plus possibly a thumbnail for quick-look purpose in 
+            a search interface).</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- granule_gid  [mandatory] -->
+        <name>granule_gid</name>
+        <version_id>2.0</version_id>
+        <local_identifier>granule_gid</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Common to granules of same type (e.g. same map projection, or geometry data products) - think of 
+            it as a simple and convenient way to group or differentiate types of data.
+            When several files relate to the same data, this parameter helps distinguishing them. This will allow the 
+            user to select the type of data of interest. E. g., a service may provide links to calibrated images, plus 
+            raw data and ancillary information for every granule; these will share the same obs_id, but will have 
+            different granule_gid.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- obs_id  [mandatory] -->
+        <name>obs_id</name>
+        <version_id>2.0</version_id>
+        <local_identifier>obs_id</local_identifier>
+        <nillable_flag>false</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Associates granules derived from the same data (e.g. various representations / processing levels). 
+            May be the ID of original observation.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>true</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+        
+    <!-- Data product attributes -->
+
+    <DD_Attribute> <!-- dataproduct_type  [mandatory] -->
+        <name>dataproduct_type</name>
+        <version_id>2.0</version_id>
+        <local_identifier>dataproduct_type</local_identifier>
+        <nillable_flag>false</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The dataproduct_type parameter describes the high level scientific organization of the data product 
+            linked by the access_url parameter (see below), or directly included in the table (in which case the value 
+            is most likely 'ca' for catalogue). EPNCore currently defines several types listed below. The data provider 
+            must select the type most adapted to his data. In complex situations (e. g., when a file contains several 
+            data products), several types can be used to describe the same granule — although using several granules to 
+            describe the file content may be a better solution. </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>true</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+            <minimum_characters>2</minimum_characters>
+            <maximum_characters>2</maximum_characters>
+            <DD_Permissible_Value>
+                <value>im</value>
+                <value_meaning>Image. scalar field with two spatial axes, or association of several such fields, e.g., 
+                    images with multiple color planes, from multichannel or filter cameras. Preview images (e.g. map 
+                    with axis and caption) also belong here. Conversely, all vectorial 2D fields are described as 
+                    catalogue</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>ma</value>
+                <value_meaning>Map. scalar field / rasters with two spatial axes covering a large area and projected 
+                    either on the sky or on a planetary body, associated to a Projection parameter (with a short 
+                    enumerated list of possible values). This is mostly intended to identify complete coverages that 
+                    can be used as reference basemaps.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>sp</value>
+                <value_meaning>Spectrum. measurements organized primarily along a spectral axis, e.g., radiance 
+                    spectra. This includes spectral aggregates (series of related spectra with non-connected spectral 
+                    ranges, e.g., from several channels of the same instrument)</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>ds</value>
+                <value_meaning>Dynamic Spectrum. consecutive spectral measurements through time, organized primarily 
+                    as a time series. This typically implies successive spectra of the same target / field of 
+                    view.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>sc</value>
+                <value_meaning>Spectral Cube. sets of spectral measurements with 1 or 2D spatial coverage, e.g., 
+                    imaging spectroscopy. The choice between image and spectral_cube is dictated by the characteristics 
+                    of the instrument (which dimension is most resolved and, which dimensions are acquired 
+                    simultaneously). The choice between dynamic_spectrum and spectral_cube is related to the uniformity 
+                    of the field of view.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>pr</value>
+                <value_meaning>Profile. scalar or vectorial measurements along 1 spatial dimension, e.g., atmospheric 
+                    profiles, atmospheric paths, sub-surface profiles, traverses...</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>vo</value>
+                <value_meaning>Volume. other measurements with 3 spatial dimensions, e.g., internal or atmospheric 
+                    structures, including shells/shape models (3D surfaces).</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>mo</value>
+                <value_meaning>Movie. sets of chronological 2D spatial measurements</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>cu</value>
+                <value_meaning>Cube. multidimensional data with 3 or more axes, e.g., all that is not described by 
+                    other 3D data types such as spectral cube or volume. This is mostly intended to accommodate unusual
+                    data with multiple dimensions.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>ts</value>
+                <value_meaning>Time Series. measurements organized primarily as a function of time (with exception of 
+                    dynamical spectra and movies, i.e. usually a scalar quantity). Typical examples of time series 
+                    include space-borne dust detector measurements, daily or seasonal curves measured at a given 
+                    location (e.g. a lander), and light curves.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>ca</value>
+                <value_meaning>Catalogue. applies to a single granule providing a list of events, a catalog of object 
+                    parameters, a list of features... "Spatial vectors" (e.g., vector information from a GIS, spatial 
+                    footprints...) belong here. This is relevant, e. g., for collections of vectorial elements (e.g. 
+                    crater lists or ROI definitions) which can be handled directly in a specialized environment such 
+                    as a GIS. This includes maps of vectors, e.g., wind maps.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>ci</value>
+                <value_meaning>Catalogue Item. applies when the service itself provides a catalogue, with entries 
+                    described as individual granules. The service can be, e. g., a list of asteroid properties or 
+                    spectral lines. Catalogue_item can be limited to scalar quantities (including strings), and 
+                    possibly to a single element. This organization allows the user to search inside the catalogue 
+                    from the TAP query interface.</value_meaning>
+            </DD_Permissible_Value>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- Target attributes for target class -->
+    
+    <DD_Attribute> <!-- target_name [mandatory] => use pds.[].target_name? --> 
+        <name>target_name</name>
+        <version_id>2.0</version_id>
+        <local_identifier>target_name</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The target_name element identifies a target by name or ID. The target may be any Solar 
+            System body, exoplanet, planetary sample, or meteorite, plus in some cases astronomical objects or 
+            spacecraft. Any other feature (craters, regions, atmospheric layers…) must be named using the optional 
+            feature_name parameter. This parameter can be multivalued only to describe several targets related to a 
+            product; alternative names of the same target can be provided through the optional alt_target_name 
+            parameter.
+            The best practice is to use the official designation of the target as defined by IAU. This parameter 
+            is case sensitive (mixing lower/upper cases) and all values must use the standard spelling and case. 
+            Data providers must be aware that services which do not use the IAU designations might not be accessible 
+            by the clients. Conversely, users must be aware that some services containing data of interest might not 
+            be visible, if they do not use the recommended IAU nomenclature for planetary bodies. The SSODnet name 
+            resolver provided by VOParis-IMCCE may help data providers (and users as well) to handle multiple 
+            denominations</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute> 
+
+    <DD_Attribute> <!-- target_class [mandatory] -->
+        <name>target_class</name>
+        <version_id>2.0</version_id>
+        <local_identifier>target_class</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The target_class element identifies the type of a named target. A target is defined 
+            without ambiguity by a couple of parameters: target_class and target_name (although some targets may have 
+            no proper name)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>true</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+            <DD_Permissible_Value>
+                <value>asteroid</value>
+                <value_meaning>asteriod</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>dwarf_planet</value>
+                <value_meaning>dwarf planet</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>planet</value>
+                <value_meaning>planet</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>satellite</value>
+                <value_meaning>natural satellite</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>comet</value>
+                <value_meaning>comet</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>exoplanet</value>
+                <value_meaning>exoplanet</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>interplanetary_medium</value>
+                <value_meaning>interplanetary medium (mostly interplanetary dust)</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>ring</value>
+                <value_meaning>planetary ring</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>sample</value>
+                <value_meaning>lunar or planetary samples, to meteorites, but also to terrestrial samples, e.g., 
+                    in laboratory studies.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>sky</value>
+                <value_meaning>sky</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>spacecraft</value>
+                <value_meaning>spacecraft</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>spacejunk</value>
+                <value_meaning>spacejunk (free floating spacecraft, spacecraft or rocket debris)</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>star</value>
+                <value_meaning>star</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>calibration</value>
+                <value_meaning>calibration target</value_meaning>
+            </DD_Permissible_Value>
+        </DD_Value_Domain>
+    </DD_Attribute>
+        
+    <!-- time axis attributes -->
+    
+    <DD_Attribute> <!-- time_min [mandatory] -->
+        <name>time_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The time_min parameter provide the start date and time of acquisition in the observer frame. 
+            Time parameters are provided in UTC and formatted in Julian days (expressed as a double precision 
+            float).</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>julian day</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- time_max [mandatory] -->
+        <name>time_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The time_max parameter provide the end date and time of acquisition in the observer frame. 
+            Time parameters are provided in UTC and formatted in Julian days.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>julian day</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- time_sampling_step_min [mandatory] -->
+        <name>time_sampling_step_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_sampling_step_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The time_sampling_step_min parameter provides the sampling step for measurements of dynamical 
+            phenomena, and for computations.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>s</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- time_sampling_step_max [mandatory] -->
+        <name>time_sampling_step_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_sampling_step_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The time_sampling_step_max parameter provides the sampling step for measurements of dynamical 
+            phenomena, and for computations.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>s</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- time_exp_min [mandatory] -->
+        <name>time_exp_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_exp_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The time_exp_min parameter correspond to the integration time (or exposure time) of measurements. 
+            </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>s</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- time_exp_max [mandatory] -->
+        <name>time_exp_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_exp_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The time_exp_max parameter correspond to the integration time (or exposure time) of measurements. 
+            </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>s</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- spectral axis attributes -->
+    
+    <DD_Attribute> <!-- spectral_range_min [mandatory] -->
+        <name>spectral_range_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spectral_range_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The spectral_range_min parameter define the lower bound of the spectral domain of the data. 
+            This quantity must be conventionally expressed on a frequency scale in Hertz, in this context.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Frequency</unit_of_measure_type>
+            <specified_unit_id>Hz</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- spectral_range_max [mandatory] -->
+        <name>spectral_range_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spectral_range_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The spectral_range_max parameter define the upper bound of the spectral domain of the data. 
+            This quantity must be conventionally expressed on a frequency scale in Hertz, in this context.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Frequency</unit_of_measure_type>
+            <specified_unit_id>Hz</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- spectral_sampling_step_min [mandatory] -->
+        <name>spectral_sampling_step_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spectral_sampling_step_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The spectral_sampling_step_min parameter the minimal spectral separation between the centers of two 
+            adjacent filters or channels. Like all spectral_* quantities, it is expressed on a frequency scale in 
+            Hz.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Frequency</unit_of_measure_type>
+            <specified_unit_id>Hz</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- spectral_sampling_step_max [mandatory] -->
+        <name>spectral_sampling_step_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spectral_sampling_step_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The spectral_sampling_step_max parameter the maximal spectral separation between the centers of two 
+            adjacent filters or channels. Like all spectral_* quantities, it is expressed on a frequency scale in 
+            Hz.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Frequency</unit_of_measure_type>
+            <specified_unit_id>Hz</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- spectral_resolution_min [mandatory] -->
+        <name>spectral_resolution_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spectral_resolution_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The spectral_resolution_min parameter correspond to the smallest spectral bandwidth used for the 
+            measurement (Full Width at Half Maximum). </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Frequency</unit_of_measure_type>
+            <specified_unit_id>Hz</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- spectral_resolution_max [mandatory] -->
+        <name>spectral_resolution_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spectral_resolution_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The spectral_resolution_max parameter correspond to the largest spectral bandwidth used for the 
+            measurement (Full Width at Half Maximum). </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Frequency</unit_of_measure_type>
+            <specified_unit_id>Hz</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <!-- spatial axes attributes -->
+    
+    <DD_Attribute> <!-- c1min [mandatory] -->
+        <name>c1min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c1min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The c1min parameter provides the lowest bound of the 1st coordinate. 
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- c1max [mandatory] -->
+        <name>c1max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c1max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The c1max parameter provides the upper bound of the 1st coordinate. 
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c2min [mandatory] -->
+        <name>c2min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c2min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The c2min parameter provides the lowest bound of the 2nd coordinate. 
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c2max [mandatory] -->
+        <name>c2max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c2max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The c2max parameter provides the upper bound of the 2nd coordinate. 
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- c3min [mandatory] -->
+        <name>c3min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c3min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The c3min parameter provides the lowest bound of the 3rd coordinate. 
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c3max [mandatory] -->
+        <name>c3max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c3max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The c3max parameter provides the upper bound of the 3rd coordinate. 
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- s_region [mandatory]-->
+        <name>s_region</name>
+        <version_id>2.0</version_id>
+        <local_identifier>s_region</local_identifier>
+        <nillable_flag>false</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Type of s_region object, written as an STC string.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c1_resol_min [mandatory] -->
+        <name>c1_resol_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c1_resol_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min resolution in first coordinate</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c1_resol_max [mandatory] -->
+        <name>c1_resol_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c1_resol_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max resolution in first coordinate</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c2_resol_min [mandatory] -->
+        <name>c2_resol_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c2_resol_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min resolution in 2nd coordinate</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c2_resol_max [mandatory] -->
+        <name>c2_resol_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c2_resol_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max resolution in 2nd coordinate</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c3_resol_min [mandatory] -->
+        <name>c3_resol_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c3_resol_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min resolution in 3rd coordinate</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- c3_resol_max [mandatory] -->
+        <name>c3_resol_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>c3_resol_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max resolution in 3rd coordinate</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- spatial_frame_type [mandatory] -->
+        <name>spatial_frame_type</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spatial_frame_type</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Provides the "flavor" of the coordinate system, which defines the nature of the spatial coordinates 
+            (c1,c2,c3) in the epn_core table and queries, and the way they are defined. This may be different from the 
+            coordinate system associated to / included in the data themselves. A value is required (use "none" if not 
+            applicable, "body" may also be OK in most cases). 
+            This parameter, although related to the specific coordinate system in use, is mostly intended to identify 
+            the nature of the coordinates handled by the service (e. g., angles versus distances).
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>true</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+            <DD_Permissible_Value>
+                <value>none</value>
+                <value_meaning>to be used when no spatial frame is defined for the dataset. This is intended to prevent 
+                    useless searches when space coordinates are not defined.
+                </value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>celestial</value>
+                <value_meaning>2D angles on the sky, i.e., right ascension c1 and declination c2 + possibly 
+                    heliocentric distance in c3 - although this is a special case of spherical frame, the order and 
+                    conventions are different. Earth distance may be provided as target_distance whenever relevant 
+                    (ground-based observations). Assumes ICRS coordinates; right ascension is provided in 
+                    degrees.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>body</value>
+                <value_meaning>2D angles in body-fixed frame: longitude c1 and latitude c2 + possibly altitude 
+                    (above a reference surface) as c3. (c3 is expected to only provide an order of magnitude in 
+                    general, not to be a fine search parameter)
+                    Planetocentric system with eastward longitudes in the range (0,360) degres is expected. Current 
+                    IAU frame is assumed, in particular for definition of  prime meridian.
+                    IAU 2009 planetocentric convention [RD12] applies, in particular eastward longitudes and a north 
+                    pole located on the north side of the invariant plane of the Solar System for planets and 
+                    satellites (see [RD12] for small bodies, and Annex A for details).  
+                </value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>cartesian</value>
+                <value_meaning>(x,y,z) as (c1,c2,c3). This includes spatial coordinates given in pixels.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>spherical</value>
+                <value_meaning>(r, theta, phi) as (c1,c2,c3), as defined in ISO standard 80000-2:2009; r = radius; 
+                    theta = zenith angle/colatitude/inclination; phi = azimuth (E longitude). Angles are provided in 
+                    degrees. When related to the sky or to a solid body, "celestial" (with RA/Dec) or "body" 
+                    (with longitude/latitude) coordinates must be used instead.</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>cylindrical</value>
+                <value_meaning>(r, theta, z) as (c1,c2,c3); r = radius; theta = azimuth; z = height. The angle is 
+                    provided in degrees.
+                </value_meaning>
+            </DD_Permissible_Value>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- geometry axes attributes -->
+    
+    <DD_Attribute> <!-- incidence_min [mandatory] -->
+        <name>incidence_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>incidence_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min incidence angle (solar zenithal angle)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- incidence_max [mandatory] -->
+        <name>incidence_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>incidence_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max incidence angle (solar zenithal angle)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- emergence_min [mandatory] -->
+        <name>emergence_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>emergence_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min emergence angle</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- emergence_max [mandatory] -->
+        <name>emergence_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>emergence_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max emergence angle</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- phase_min [mandatory] -->
+        <name>phase_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>phase_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min phase angle</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- phase_max [mandatory] -->
+        <name>phase_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>phase_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max phase angle</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <!-- instrument description attributes -->
+    
+    <DD_Attribute> <!-- instrument_host_name [mandatory] -->
+        <name>instrument_host_name</name>
+        <version_id>2.0</version_id>
+        <local_identifier>instrument_host_name</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Ceccconi</submitter_name>
+        <definition>Standard name of the observatory or spacecraft</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- instrument_name [mandatory] -->
+        <name>instrument_name</name>
+        <version_id>2.0</version_id>
+        <local_identifier>instrument_name</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Standard name of instrument</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- data product description attributes -->
+    
+    <DD_Attribute> <!-- measurement_type  [mandatory] -->
+        <name>measurement_type</name>
+        <version_id>2.0</version_id>
+        <local_identifier>measurement_type</local_identifier>
+        <nillable_flag>false</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The measurement_type parameter defines the physical quantities contained in the data, using UCDs. 
+            It relates to the reported quantity, not to the type of experiment. Therefore only UCD related to physical 
+            quantities can be used; e.g., phys.absorption;em.opt.I is eligible, while stellar_occultation is not. 
+            The provider must use the "UCD1+" list from IVOA as a reference, and should extend it only when 
+            necessary.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>true</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- processing_level  [mandatory] -->
+        <name>processing_level</name>
+        <version_id>2.0</version_id>
+        <local_identifier>processing_level</local_identifier>
+        <nillable_flag>false</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>In the framework of EPN-TAP, this parameter is intended to provide the user with a quick evaluation 
+            of data "usability". Several classifications are in use in different contexts, as summarized in the table 
+            below. EPNCore v2 uses the CODMAC levels / PDS3 but removes the intermediate calibration levels; this is 
+            equivalent to using the simplified PDS4 levels and maintaining a separated level for ancillary data. 
+            "Partially calibrated" datasets are in general considered as not calibrated, but this evaluation is up to 
+            the data provider depending on context. "Ancillary" data include all extra information documenting the 
+            measurements, in particular coordinates or geometry files. Although it may be more consistent to separate 
+            calibration levels in different data services, several levels can be included in the same service 
+            (in particular calibrated and ancillary data). Only one value can be accommodated in this field, so the 
+            most advanced level (1-5) must be used whenever several levels are available in the same granule</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Integer</value_data_type>
+            <DD_Permissible_Value>
+                <value>1</value>
+                <value_meaning>Unprocessed Data Record: Low-level encoding, e.g. telemetry from a spacecraft 
+                    instrument. Normally available only to the original team. Corresponding level in other 
+                    nomenclatures:
+                    - CODMAC = 1 - raw
+                    - PSA = 1a
+                    - NASA = N/A
+                    - PRODUCT_TYPE (PS3/PSA) = UDR
+                    - PDS4 = Telemetry
+                    - ObsCore = Level 0
+                </value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>2</value>
+                <value_meaning>Experiment Data Record: often referred to as "raw data": decommutated, but still 
+                    affected by instrumental effects. Corresponding level in other nomenclatures:
+                    - CODMAC = 2 - edited
+                    - PSA = 1b
+                    - NASA = 0
+                    - PRODUCT_TYPE (PS3/PSA) = EDR
+                    - PDS4 = Raw
+                    - ObsCore = Level 1
+                </value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>3</value>
+                <value_meaning>Reduced Data Record: "calibrated" in physical units. Corresponding level in other 
+                    nomenclatures:
+                    - CODMAC = 3 - calibrated
+                    - PSA = 2
+                    - NASA = 1A
+                    - PRODUCT_TYPE (PS3/PSA) = RDR
+                    - PDS4 = Calibrated
+                    - ObsCore = Level 2
+                </value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>5</value>
+                <value_meaning>Reformatted Data Record: mosaics or composite of several observing sessions, involving 
+                    some level of data fusion. Corresponding level in other nomenclatures:
+                    - CODMAC = 4 - resampled
+                    - PSA = N/A
+                    - NASA = 1B
+                    - PRODUCT_TYPE (PS3/PSA) = REFDR
+                    - PDS4 = Derived
+                    - ObsCore = N/A
+                    Derived Data Record: result of data analysis, directly usable by other communities with 
+                    no further processing. Corresponding level in other nomenclatures:
+                    - CODMAC = 5 - derived
+                    - PSA = 3
+                    - NASA = 2 to 5
+                    - PRODUCT_TYPE (PS3/PSA) = DDR
+                    - PDS4 = Derived
+                    - ObsCore = 3
+                </value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>6</value>
+                <value_meaning>Ancillary Data Record: extra data specifically supporting a data set, such as 
+                    coordinates, geometry... Corresponding level in other nomenclatures:
+                    - CODMAC = 6 - ancillary
+                    - PSA = N/A
+                    - NASA = N/A
+                    - PRODUCT_TYPE (PS3/PSA) = ANCDR
+                    - PDS4 = Derived
+                    - ObsCore = N/A
+                </value_meaning>
+            </DD_Permissible_Value>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- data product dates attributes -->
+
+    <DD_Attribute> <!-- creation_date [mandatory] -->
+        <name>creation_date</name>
+        <version_id>2.0</version_id>
+        <local_identifier>creation_date</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Date of first entry of this granule</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Date_Time_YMD</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- modification_date [mandatory] -->
+        <name>modification_date</name>
+        <version_id>2.0</version_id>
+        <local_identifier>modification_date</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Date of last modification (used to handle mirroring)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Date_Time_YMD</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- release_date [madatory] -->
+        <name>release_date</name>
+        <version_id>2.0</version_id>
+        <local_identifier>release_date</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Start of public access period (set to creation_date if no proprietary period)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Date_Time_YMD</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- service_title [mandatory] -->
+        <name>service_title</name>
+        <version_id>2.0</version_id>
+        <local_identifier>service_title</local_identifier>
+        <nillable_flag>false</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Title of resource (an acronym really, will be used to handle multiservice results)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- ++++++++ optional attributes ++++++++ -->
+    
+    <!-- Product access parameters -->
+
+    <DD_Attribute> <!-- access_url [optional] -->
+        <name>access_url</name>
+        <version_id>2.0</version_id>
+        <local_identifier>access_url</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>URL of the data file, case sensitive. If present, access_estsize and access_format parameters 
+            must also be present.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_AnyURI</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- access_format [optional] -->
+        <name>access_format</name>
+        <version_id>2.0</version_id>
+        <local_identifier>access_format</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>File format type (MIME type), e.g.: text/plain, application/binary, image/fits... </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_AnyURI</value_data_type> <!-- AnyURI is not correct here -->
+            <formation_rule>type/subtype;parameters</formation_rule>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- access_estsize [optional] -->
+        <name>access_estsize</name>
+        <version_id>2.0</version_id>
+        <local_identifier>access_estsize</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Estimate file size in kbyte</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Misc</unit_of_measure_type>
+            <specified_unit_id>kbyte</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- access_md5 [optional] -->
+        <name>access_md5</name>
+        <version_id>2.0</version_id>
+        <local_identifier>access_md5</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>MD5 Hash for the file when available</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_MD5_Checksum</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- thumbnail_url [optional] -->
+        <name>thumbnail_url</name>
+        <version_id>2.0</version_id>
+        <local_identifier>thumbnail_url</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>URL of a thumbnail image with predefined size (file format = PNG (preferred), GIF, JPG, file size 
+            below 500 pix, for use in a client only)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_AnyURI</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- file_name [optional] -->
+        <name>file_name</name>
+        <version_id>2.0</version_id>
+        <local_identifier>file_name</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Name of the data file only, case sensitive</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_File_Name</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+        
+    <!-- other optional parameters -->
+    
+    <DD_Attribute> <!-- species [optional] -->
+        <name>species</name>
+        <version_id>2.0</version_id>
+        <local_identifier>species</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Identifies a chemical species, case sensitive</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- filter [optional] -->
+        <name>filter</name>
+        <version_id>2.0</version_id>
+        <local_identifier>filter</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Identifies a filter in use (e.g. imaging)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- alt_target_name [optional] -->
+        <name>alt_target_name</name>
+        <version_id>2.0</version_id>
+        <local_identifier>alt_target_name</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>This parameter introduces an alternative name of the target, especially when it is more usual than 
+            the official IAU one (e.g., Halley vs 1P).
+            Another possible usage is to store here a list of all alternative names of the target (e.g., for asteroids: 
+            name, number, principal and provisional designations).</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+            <minimum_characters>0</minimum_characters>
+            <maximum_characters>256</maximum_characters>
+        </DD_Value_Domain>
+    </DD_Attribute>
+ 
+    <DD_Attribute> <!-- target_region [optional] --> 
+        <name>target_region</name>
+        <version_id>2.0</version_id>
+        <local_identifier>target_region</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>This parameter optionally identifies the region of interest for the resource, in complement to 
+            target_name. This parameter only introduces generic regions, not specific local names, which must be 
+            handled using the feature_name parameter. Examples of target_region are: interior, surface, subsurface, 
+            atmosphere, ionosphere, magnetosphere...
+            The best practice is to take the values from standard sources:
+            - IVOA thesaurus: http://www.ivoa.net/rdf/Vocabularies/vocabularies-20091007/IVOAT/
+            - IAU thesaurus http://www.mso.anu.edu.au/library/thesaurus/
+            - another version: http://www.vocabularyserver.com/trex/en/
+            The latter seems more recent and more complete (although the interface is not practical)
+            - Spase dictionary http://www.spase-group.org/
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- feature_name [optional] -->
+        <name>feature_name</name>
+        <version_id>2.0</version_id>
+        <local_identifier>feature_name</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The feature_name parameter introduces a supplementary name to provide more details about the 
+            observed target. It is intended in particular to accommodate a local name (crater, surface feature, 
+            region name...) whereas target_name is reserved to describe the whole body (Mars, Moon, Ceres…). The best 
+            practice is to use the official features name defined by IAU when relevant.
+            The target_region parameter also provides additional information on the target, but is aimed 
+            at indicating the global scope of a database (e.g., atmospheric layer, internal structure...).</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- bib_reference [optional] -->
+        <name>bib_reference</name>
+        <version_id>2.0</version_id>
+        <local_identifier>bib_reference</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Bibliographic reference (ADS Bibcode preferred, doi, or other biblio id, URL...)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- internal_reference [optional] -->
+        <name>internal_reference</name>
+        <version_id>2.0</version_id>
+        <local_identifier>internal_reference</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>List of granule_uid(s) in the current service</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- external_link [optional] -->
+        <name>external_link</name>
+        <version_id>2.0</version_id>
+        <local_identifier>external_link</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Link to a web page providing more details on the granule.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_AnyURI</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- subsolar_longitude [optional] -->
+        <name>subsolar_longitude</name>
+        <version_id>2.0</version_id>
+        <local_identifier>subsolar_longitude</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Sub-solar point longitude</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <maximum_value>360</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+   
+    <DD_Attribute> <!-- subsolar_latitude [optional] -->
+        <name>subsolar_latitude</name>
+        <version_id>2.0</version_id>
+        <local_identifier>subsolar_latitude</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Sub-solar point latitude</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>-90</minimum_value>
+            <maximum_value>90</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- subobserver_longitude [optional] -->
+        <name>subobserver_longitude</name>
+        <version_id>2.0</version_id>
+        <local_identifier>subobserver_longitude</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Sub-observer point longitude (sub-Earth for ground based observations)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <maximum_value>360</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- subobserver_latitude [optional] -->
+        <name>subobserver_latitude</name>
+        <version_id>2.0</version_id>
+        <local_identifier>subobserver_latitude</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Sub-observer point latitude (sub-Earth for ground based observations)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>-90</minimum_value>
+            <maximum_value>90</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- ra [optional] -->
+        <name>ra</name>
+        <version_id>2.0</version_id>
+        <local_identifier>ra</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Right Ascension</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <maximum_value>24</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>hr</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- dec [optional] -->
+        <name>dec</name>
+        <version_id>2.0</version_id>
+        <local_identifier>dec</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Declination</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>-90</minimum_value>
+            <maximum_value>90</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- radial_distance [optional] -->
+        <name>radial_distance</name>
+        <version_id>2.0</version_id>
+        <local_identifier>radial_distance</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Distance from center (in body-fixed frame)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>km</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- altitude_fromshape [optional] -->
+        <name>altitude_fromshape</name>
+        <version_id>2.0</version_id>
+        <local_identifier>altitude_fromshape</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Altitude above shape model / DTM (in body-fixed frame)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>km</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- solar_longitude_min [optional] -->
+        <name>solar_longitude_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>solar_longitude_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min Solar longitude Ls (location on orbit / season)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <maximum_value>360</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+ 
+    <DD_Attribute> <!-- solar_longitude_max [optional] -->
+        <name>solar_longitude_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>solar_longitude_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max Solar longitude Ls (location on orbit / season)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <maximum_value>360</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>deg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- local_time_min [optional] -->
+        <name>local_time_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>local_time_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptste Cecconi</submitter_name>
+        <definition>Min value of Local time at observed region</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <maximum_value>24</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>hr</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- local_time_max [optional] -->
+        <name>local_time_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>local_time_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptste Cecconi</submitter_name>
+        <definition>Max value of Local time at observed region</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <maximum_value>24</maximum_value>
+            <unit_of_measure_type>Units_of_Angle</unit_of_measure_type>
+            <specified_unit_id>hr</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- target_distance_min [optional] -->
+        <name>target_distance_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>target_distance_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The target_distance_min parameter provides the lower bound of the distance of the observer to the 
+            observed area.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>m</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- target_distance_max [optional] -->
+        <name>target_distance_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>target_distance_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The target_distance_min parameter provides the upper bound of the distance of the observer to the 
+            observed area.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <minimum_value>0</minimum_value>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>m</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- target_time_min [optional] -->
+        <name>target_time_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>target_time_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min value of Observing time in target frame </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>julian day</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- target_time_max [optional] -->
+        <name>target_time_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>target_time_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max value of Observing time in target frame </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>julian day</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- earth_distance_min [optional] -->
+        <name>earth_distance_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>earth_distance_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min value of Earth-target distance</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>AU</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- earth_distance_max [optional] -->
+        <name>earth_distance_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>earth_distance_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max value of Earth-target distance</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>AU</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- sun_distance_min [optional] -->
+        <name>sun_distance_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>sun_distance_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Min value of Sun-target distance</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>AU</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- sun_distance_max [optional] -->
+        <name>sun_distance_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>sun_distance_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Max value of Sun-target distance</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>AU</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- particle_spectral_type [optional] -->
+        <name>particle_spectral_type</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_type</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>This parameter and the following ones are related to the spectral distribution of particles only 
+            (see the spectral_* parameters for electro-magnetic waves).
+            The particle_spectral_type parameter introduces the type of axis in use: either energy (provided in eV), 
+            mass (in amu), or mass/charge ratio (in amu/qe).</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>true</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+            <DD_Permissible_Value>
+                <value>energy</value>
+                <value_meaning>Energy spectrum, in eV</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>mass</value>
+                <value_meaning>Mass spectrum, in amu</value_meaning>
+            </DD_Permissible_Value>
+            <DD_Permissible_Value>
+                <value>mass/charge</value>
+                <value_meaning>Mass/charge spectrum, in amu/qe</value_meaning>
+            </DD_Permissible_Value>
+        </DD_Value_Domain>
+    </DD_Attribute> 
+
+    <DD_Attribute> <!-- particle_spectral_range_min [optional] -->
+        <name>particle_spectral_range_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_range_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The particle_spectral_range_min parameter define the lower bound of the spectral domain 
+            for particles. Depending on the particle_spectral_type parameter, this quantity is expressed on an energy, 
+            mass, or mass/charge scale, with respective units eV, amu, or amu/qe.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- particle_spectral_range_max [optional] -->
+        <name>particle_spectral_range_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_range_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The particle_spectral_range_max parameter define the upper bound of the spectral domain 
+            for particles. Depending on the particle_spectral_type parameter, this quantity is expressed on an energy, 
+            mass, or mass/charge scale, with respective units eV, amu, or amu/qe.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- particle_spectral_sampling_step_min [optional] -->
+        <name>particle_spectral_sampling_step_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_sampling_step_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The particle_spectral_sampling_step_min parameters provide the minimal spectral separation between 
+            measurements, in the same scale and unit as particle_spectral_range_min and particle_spectral_range_max.
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- particle_spectral_sampling_step_max [optional] -->
+        <name>particle_spectral_sampling_step_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_sampling_step_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The particle_spectral_sampling_step_max parameter provides the maximal spectral separation between 
+            measurements, in the same scale and unit as particle_spectral_range parameters.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- particle_spectral_resolution_min [optional] -->
+        <name>particle_spectral_resolution_min</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_resolution_min</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The particle_spectral_resolution_min parameter provides to the minimal spectral resolution of the 
+            measurements, in the same scale and unit as particle_spectral_range parameters.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- particle_spectral_resolution_max [optional] -->
+        <name>particle_spectral_resolution_max</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_resolution_max</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The particle_spectral_resolution_max parameter provides to the maximal spectral resolution of the 
+            measurements, in the same scale and unit as particle_spectral_range parameters.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- mass [optional] -->
+        <name>mass</name>
+        <version_id>2.0</version_id>
+        <local_identifier>mass</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Mass of the object</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Mass</unit_of_measure_type>
+            <specified_unit_id>kg</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- sideral_rotation_period [optional] -->
+        <name>sideral_rotation_period</name>
+        <version_id>2.0</version_id>
+        <local_identifier>sideral_rotation_period</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Sideral rotation period of the object</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Time</unit_of_measure_type>
+            <specified_unit_id>hr</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- mean_radius [optional] -->
+        <name>mean_radius</name>
+        <version_id>2.0</version_id>
+        <local_identifier>mean_radius</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Mean radius of an object</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>km</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- equatorial_radius [optional] -->
+        <name>equatorial_radius</name>
+        <version_id>2.0</version_id>
+        <local_identifier>equatorial_radius</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Equatorial radius of an object</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>km</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+
+    <DD_Attribute> <!-- polar_radius [optional] -->
+        <name>polar_radius</name>
+        <version_id>2.0</version_id>
+        <local_identifier>polar_radius</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Polar radius of an object</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+            <unit_of_measure_type>Units_of_Length</unit_of_measure_type>
+            <specified_unit_id>km</specified_unit_id>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- Other optional parameters -->
+
+    <DD_Attribute> <!-- publisher [optional] -->
+        <name>publisher</name>
+        <version_id>2.0</version_id>
+        <local_identifier>publisher</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Resource publisher</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- spatial_coordinate_description [optional} -->
+        <name>spatial_coordinate_description</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spatial_coordinate_description</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The spatial_coordinate_description parameter provides description of the spatial frame in use, 
+            as introduced by the spatial_frame_type parameter.
+        </definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- spatial_origin [optional] -->
+        <name>spatial_origin</name>
+        <version_id>2.0</version_id>
+        <local_identifier>spatial_origin</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Spatial_origin may be used to distinguish between altitude and distance from center when body 
+            coordinates are in use</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- time_origin [optional] -->
+        <name>time_origin</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_origin</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>This attribute states where the time is measured, and is expected to remain constant throughout 
+            the service. This knowledge is required to cross-correlate event-based observations, in particular to 
+            indicate light-path differences. It applies to the time_min and time_max parameters (target_time always 
+            refers to the target in the FoV). If this parameter is not informed, time is expected to be provided in 
+            the observer frame.
+            Possible values for time_origin are:
+            Earth, (solar system bodies), (spacecraft)</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <DD_Attribute> <!-- time_scale [optional] -->
+        <name>time_scale</name>
+        <version_id>2.0</version_id>
+        <local_identifier>time_scale</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>Default is UTC in data services (may be relaxed in computational services such as ephemeris).</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>true</enumeration_flag>
+            <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
+    <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+        
+    <!-- Main elements -->
+    
+    <DD_Class> <!-- VESPA_EPNcore_Parameters element -->
+        <name>VESPA_EPNcore_Parameters</name>
+        <version_id>2.0</version_id>
+        <local_identifier>VESPA_EPNcore_Parameters</local_identifier>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>
+            This is the wrapper class for all VESPA EPNcore attributes and classes.  This is what you include in your 
+            label to use the VESPA dictionary.
+        </definition>
+        <element_flag>true</element_flag>
+        
+        <DD_Association> <!-- granule_uid -->
+            <identifier_reference>granule_uid</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>     
+        <DD_Association> <!-- granule_gid -->
+            <identifier_reference>granule_gid</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- obs_id -->
+            <identifier_reference>obs_id</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- dataproduct_type -->
+            <identifier_reference>dataproduct_type</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- measurement_type -->
+            <identifier_reference>measurement_type</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- processing_level -->
+            <identifier_reference>processing_level</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- target_name -->
+            <identifier_reference>target_name</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- target_class -->
+            <identifier_reference>target_class</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- target_region -->
+            <identifier_reference>target_region</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- alt_target_name -->
+            <identifier_reference>alt_target_name</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- feature_name -->
+            <identifier_reference>feature_name</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_min -->
+            <identifier_reference>time_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_max -->
+            <identifier_reference>time_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_sampling_step_min -->
+            <identifier_reference>time_sampling_step_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_sampling_step_max -->
+            <identifier_reference>time_sampling_step_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_exp_min -->
+            <identifier_reference>time_exp_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_exp_max -->
+            <identifier_reference>time_exp_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_orgin -->
+            <identifier_reference>time_origin</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- time_scale -->
+            <identifier_reference>time_scale</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spectral_range_min -->
+            <identifier_reference>spectral_range_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spectral_range_max -->
+            <identifier_reference>spectral_range_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spectral_sampling_step_min -->
+            <identifier_reference>spectral_sampling_step_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spectral_sampling_step_max -->
+            <identifier_reference>spectral_sampling_step_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spectral_resolution_min -->
+            <identifier_reference>spectral_resolution_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spectral_resolution_max -->
+            <identifier_reference>spectral_resolution_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spatial_frame_type -->
+            <identifier_reference>spatial_frame_type</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c1min -->
+            <identifier_reference>c1min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c1max -->
+            <identifier_reference>c1max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c2min -->
+            <identifier_reference>c2min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c2max -->
+            <identifier_reference>c2max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c3min -->
+            <identifier_reference>c3min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c3max -->
+            <identifier_reference>c3max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c1_resol_min -->
+            <identifier_reference>c1_resol_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c1_resol_max -->
+            <identifier_reference>c1_resol_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c2_resol_min -->
+            <identifier_reference>c2_resol_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c2_resol_max -->
+            <identifier_reference>c2_resol_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c3_resol_min -->
+            <identifier_reference>c3_resol_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- c3_resol_max -->
+            <identifier_reference>c3_resol_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- s_region -->
+            <identifier_reference>s_region</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spatial_coordinate_description -->
+            <identifier_reference>spatial_coordinate_description</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- spatial_orgin -->
+            <identifier_reference>spatial_origin</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- incidence_min -->
+            <identifier_reference>incidence_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- incidence_max -->
+            <identifier_reference>incidence_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- emergence_min -->
+            <identifier_reference>emergence_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- emergence_max -->
+            <identifier_reference>emergence_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- phase_min -->
+            <identifier_reference>phase_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- phase_max -->
+            <identifier_reference>phase_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- instrument_host_name -->
+            <identifier_reference>instrument_host_name</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- instrument_name -->
+            <identifier_reference>instrument_name</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- creation_date -->
+            <identifier_reference>creation_date</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- modification_date -->
+            <identifier_reference>modification_date</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- release_date -->
+            <identifier_reference>release_date</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- service_title -->
+            <identifier_reference>service_title</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>1</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- access_url -->
+            <identifier_reference>access_url</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- access_format -->
+            <identifier_reference>access_format</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- access_estsize -->
+            <identifier_reference>access_estsize</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- access_md5 -->
+            <identifier_reference>access_md5</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- thumbnail_url -->
+            <identifier_reference>thumbnail_url</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- file_name -->
+            <identifier_reference>file_name</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- species -->
+            <identifier_reference>species</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- filter -->
+            <identifier_reference>filter</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- bib_reference -->
+            <identifier_reference>bib_reference</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- internal_reference -->
+            <identifier_reference>internal_reference</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>*</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- external_link -->
+            <identifier_reference>external_link</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- subsolar_longitude -->
+            <identifier_reference>subsolar_longitude</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- subsolar_latitude -->
+            <identifier_reference>subsolar_latitude</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- subobserver_longitude -->
+            <identifier_reference>subobserver_longitude</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- subobserver_latitude -->
+            <identifier_reference>subobserver_latitude</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- ra -->
+            <identifier_reference>ra</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- dec -->
+            <identifier_reference>dec</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- radial_distance -->
+            <identifier_reference>radial_distance</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- altitude_fromshape -->
+            <identifier_reference>altitude_fromshape</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- solar_longitude_min -->
+            <identifier_reference>solar_longitude_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- solar_longitude_max -->
+            <identifier_reference>solar_longitude_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- local_time_min -->
+            <identifier_reference>local_time_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- local_time_max -->
+            <identifier_reference>local_time_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- target_distance_min -->
+            <identifier_reference>target_distance_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- target_distance_max -->
+            <identifier_reference>target_distance_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- target_time_min -->
+            <identifier_reference>target_time_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- target_time_max -->
+            <identifier_reference>target_time_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- earth_distance_min -->
+            <identifier_reference>earth_distance_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- earth_distance_max -->
+            <identifier_reference>earth_distance_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- sun_distance_min -->
+            <identifier_reference>sun_distance_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- sun_distance_max -->
+            <identifier_reference>sun_distance_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- particle_spectral_type -->
+            <identifier_reference>particle_spectral_type</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- particle_spectral_range_min -->
+            <identifier_reference>particle_spectral_range_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- particle_spectral_range_max -->
+            <identifier_reference>particle_spectral_range_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- particle_spectral_sampling_step_min -->
+            <identifier_reference>particle_spectral_sampling_step_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- particle_spectral_sampling_step_max -->
+            <identifier_reference>particle_spectral_sampling_step_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- particle_spectral_resolution_min -->
+            <identifier_reference>particle_spectral_resolution_min</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- particle_spectral_resolution_max -->
+            <identifier_reference>particle_spectral_resolution_max</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- mass -->
+            <identifier_reference>mass</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- sideral_rotation_period -->
+            <identifier_reference>sideral_rotation_period</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- mean_radius -->
+            <identifier_reference>mean_radius</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- equatorial_radius -->
+            <identifier_reference>equatorial_radius</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- polar_radius -->
+            <identifier_reference>polar_radius</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+        <DD_Association> <!-- publisher -->
+            <identifier_reference>publisher</identifier_reference>
+            <reference_type>attribute_of</reference_type>
+            <minimum_occurrences>0</minimum_occurrences>
+            <maximum_occurrences>1</maximum_occurrences>
+        </DD_Association>
+    </DD_Class>
+    
+    <!-- Schematron rules -->
+    
+    <DD_Rule> <!-- check_time_range_bounds -->
+        <local_identifier>check_time_range_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:time_min) or not(epn:time_max) or epn:time_min &amp;lt;= epn:time_max</rule_test>
+            <rule_message>time_min must be lower or equal than time_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- check_time_sampling_step_bounds -->
+        <local_identifier>check_time_sampling_step_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:time_sampling_step_min) or not(epn:time_sampling_step_max) or 
+                epn:time_sampling_step_min &amp;lt;= epn:time_sampling_step_max</rule_test>
+            <rule_message>time_sampling_step_min must be lower or equal than time_sampling_step_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- check_time_exp_bounds -->
+        <local_identifier>check_time_exp_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:time_exp_min) or not(epn:time_exp_max) or 
+                epn:time_exp_min &amp;lt;= epn:time_exp_max</rule_test>
+            <rule_message>time_exp_min must be lower or equal than time_exp_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    
+    <DD_Rule> <!-- check_spectral_range_bounds -->
+        <local_identifier>check_spectral_range_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:spectral_range_min) or not(epn:spectral_range_max) or 
+                epn:spectral_range_min &amp;lt;= epn:spectral_range_max</rule_test>
+            <rule_message>specral_range_min must be lower or equal than specral_range_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- check_spectral_sampling_step_range_bounds -->
+        <local_identifier>check_spectral_sampling_step_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:spectral_sampling_step_min) or not(epn:spectral_sampling_step_max) or 
+                epn:spectral_sampling_step_min &amp;lt;= epn:spectral_sampling_step_max</rule_test>
+            <rule_message>spectral_sampling_step_min must be lower or equal than spectral_sampling_step_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- check_spectral_resolution_range_bounds -->
+        <local_identifier>check_spectral_resolution_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:spectral_resolution_min) or not(epn:spectral_resolution_max) or 
+                epn:spectral_resolution_min &amp;lt;= epn:spectral_resolution_max</rule_test>
+            <rule_message>spectral_resolution_min must be lower or equal than spectral_resolution_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    
+    <DD_Rule> <!-- checks_c1_resol_bounds -->
+        <local_identifier>checks_c1_resol_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:c1_resol_min) or not(epn:c1_resol_max) or
+                epn:c1_resol_min &amp;lt;= epn:c1_resol_max
+            </rule_test>
+            <rule_message>c1_resol_min must be lower or equal than c1_resol_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_c2_resol_bounds -->
+        <local_identifier>checks_c2_resol_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:c2_resol_min) or not(epn:c2_resol_max) or
+                epn:c2_resol_min &amp;lt;= epn:c2_resol_max
+            </rule_test>
+            <rule_message>c2_resol_min must be lower or equal than c2_resol_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_c3_resol_bounds -->
+        <local_identifier>checks_c3_resol_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:c3_resol_min) or not(epn:c3_resol_max) or
+                epn:c3_resol_min &amp;lt;= epn:c3_resol_max
+            </rule_test>
+            <rule_message>c3_resol_min must be lower or equal than c3_resol_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    
+    <DD_Rule> <!-- checks_incidence_bounds -->
+        <local_identifier>checks_incidence_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:incidence_min) or not(epn:incidence_max) or 
+                epn:incidence_min &amp;lt;= epn:incidence_max
+            </rule_test>
+            <rule_message>incidence_min must be lower or equal than incidence_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_emergence_bounds -->
+        <local_identifier>checks_emergence_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:emergence_min) or not(epn:emergence_max) or 
+                epn:emergence_min &amp;lt;= epn:emergence_max
+            </rule_test>
+            <rule_message>emergence_min must be lower or equal than emergence_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_phase_bounds -->
+        <local_identifier>checks_phase_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:phase_min) or not(epn:phase_max) or 
+                epn:phase_min &amp;lt;= epn:phase_max
+            </rule_test>
+            <rule_message>phase_min must be lower or equal than phase_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+
+    <DD_Rule> <!-- checks_solar_longitude_bounds [relevant?] -->
+        <local_identifier>checks_solar_longitude_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:solar_longitude_min) or not(epn:solar_longitude_max) or 
+                epn:solar_longitude_min &amp;lt;= epn:solar_longitude_max
+            </rule_test>
+            <rule_message>solar_longitude_min must be lower or equal than solar_longitude_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_local_time_bounds [relevant?] -->
+        <local_identifier>checks_local_time_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:local_time_min) or not(epn:local_time_max) or 
+                epn:local_time_min &amp;lt;= epn:local_time_max
+            </rule_test>
+            <rule_message>local_time_min must be lower or equal than local_time_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_target_distance_bounds -->
+        <local_identifier>checks_target_distance_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:target_distance_min) or not(epn:target_distance_max) or
+                epn:target_distance_min &amp;lt;= epn:target_distance_max
+            </rule_test>
+            <rule_message>target_distance_min must be lower or equal than target_distance_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_target_time_bounds -->
+        <local_identifier>checks_target_time_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:target_time_min) or not(epn:target_time_max) or
+                epn:target_time_min &amp;lt;= epn:target_time_max
+            </rule_test>
+            <rule_message>target_time_min must be lower or equal than target_time_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_earth_distance_bounds -->
+        <local_identifier>checks_earth_distance_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:earth_distance_min) or not(epn:earth_distance_max) or
+                epn:earth_distance_min &amp;lt;= epn:earth_distance_max
+            </rule_test>
+            <rule_message>earth_distance_min must be lower or equal than earth_distance_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- checks_sun_distance_bounds -->
+        <local_identifier>checks_sun_distance_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:sun_distance_min) or not(epn:sun_distance_max) or
+                epn:sun_distance_min &amp;lt;= epn:sun_distance_max
+            </rule_test>
+            <rule_message>sun_distance_min must be lower or equal than sun_distance_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+
+    <DD_Rule> <!-- check_particle_spectral_range_bounds -->
+        <local_identifier>check_particle_spectral_range_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:particle_spectral_range_min) or not(epn:particle_spectral_range_max) or 
+                epn:particle_spectral_range_min &amp;lt;= epn:particle_spectral_range_max</rule_test>
+            <rule_message>particle_specral_range_min must be lower or equal than particle_specral_range_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- check_particle_spectral_sampling_step_range_bounds -->
+        <local_identifier>check_particle_spectral_sampling_step_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:particle_spectral_sampling_step_min) or not(epn:particle_spectral_sampling_step_max) or 
+                epn:particle_spectral_sampling_step_min &amp;lt;= epn:particle_spectral_sampling_step_max</rule_test>
+            <rule_message>particle_spectral_sampling_step_min must be lower or equal than particle_spectral_sampling_step_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    <DD_Rule> <!-- check_particle_spectral_resolution_range_bounds -->
+        <local_identifier>check_particle_spectral_resolution_bounds</local_identifier>
+        <rule_context>epn:VESPA_EPNcore_Parameters</rule_context>
+        <DD_Rule_Statement>
+            <rule_type>Assert</rule_type>
+            <rule_test>not(epn:particle_spectral_resolution_min) or not(epn:particle_spectral_resolution_max) or 
+                epn:particle_spectral_resolution_min &amp;lt;= epn:particle_spectral_resolution_max</rule_test>
+            <rule_message>particle_spectral_resolution_min must be lower or equal than particle_spectral_resolution_max</rule_message>
+        </DD_Rule_Statement>
+    </DD_Rule>
+    
+</Ingest_LDD>
