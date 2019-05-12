@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="Ingest_LDD_VESPA_EPN_1x8000.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<VESPA_EPNcore_Parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://pds.nasa.gov/pds4/epn/v1" xsi:schemaLocation="http://pds.nasa.gov/pds4/epn/v1 Ingest_LDD_VESPA_EPN_1x8000.xsd">
+    <granule>
+        <granule_uid>test</granule_uid>
+        <granule_gid>test</granule_gid>
+        <obs_id>test</obs_id>
+    </granule>
+    <data_description>
+        <dataproduct_type>ts</dataproduct_type>
+        <measurement_type>phys.magField</measurement_type>
+        <processing_level>2</processing_level>
+    </data_description>
+    <target>
+        <target_class>planet</target_class>
+        <target_name>Jupiter</target_name>
+    </target>
+    <observation_system>
+        <instrument_host_name>Cassini</instrument_host_name>
+        <instrument_name>Mag</instrument_name>
+    </observation_system>
+    <time_axis>
+        <time_range>
+            <time_min unit="julian day">2455000.5</time_min>
+            <time_max unit="julian day">2455001.5</time_max>
+        </time_range>
+        <time_sampling_step>
+            <time_sampling_step_min unit="s">10</time_sampling_step_min>
+            <time_sampling_step_max unit="s">10</time_sampling_step_max>
+        </time_sampling_step>
+        <time_exp>
+            <time_exp_min unit="s">5</time_exp_min>
+            <time_exp_max unit="s">5</time_exp_max>
+        </time_exp>
+    </time_axis>
+    <spectral_axis>
+        <spectral_range>
+            <spectral_range_min unit="Hz">0.1</spectral_range_min>
+            <spectral_range_max unit="Hz">10</spectral_range_max>
+        </spectral_range>
+        <spectral_sampling_step>
+            <spectral_sampling_step_min unit="Hz">1</spectral_sampling_step_min>
+            <spectral_sampling_step_max unit="Hz">1</spectral_sampling_step_max>
+        </spectral_sampling_step>
+        <spectral_resolution>
+            <spectral_resolution_min unit="Hz">1</spectral_resolution_min>
+            <spectral_resolution_max unit="Hz">1</spectral_resolution_max>
+        </spectral_resolution>
+    </spectral_axis>
+    <spatial_axes>
+        <spatial_frame_type>cartesian</spatial_frame_type>
+        <spatial_coordinate_description>Jupiter_III</spatial_coordinate_description>
+        <spatial_origin>Jupiter</spatial_origin>
+        <cartesian_frame_axes>
+            <c1min unit="m">10</c1min>
+            <c1max unit="m">100</c1max>
+            <c2min unit="m">-5</c2min>
+            <c2max unit="m">5</c2max>
+            <c3min unit="m">100</c3min>
+            <c3max unit="m">10000</c3max>
+        </cartesian_frame_axes>
+        <s_region>
+            <s_region_type>polygon</s_region_type>
+            <s_region_polygon_point>
+                <s_region_lon unit="deg">10</s_region_lon>
+                <s_region_lat unit="deg">-5</s_region_lat>
+            </s_region_polygon_point>
+            <s_region_polygon_point>
+                <s_region_lon unit="deg">10</s_region_lon>
+                <s_region_lat unit="deg">5</s_region_lat>
+            </s_region_polygon_point>
+            <s_region_polygon_point>
+                <s_region_lon unit="deg">100</s_region_lon>
+                <s_region_lat unit="deg">5</s_region_lat>
+            </s_region_polygon_point>
+            <s_region_polygon_point>
+                <s_region_lon unit="deg">100</s_region_lon>
+                <s_region_lat unit="deg">-5</s_region_lat>
+            </s_region_polygon_point>
+            <s_region_polygon_point>
+                <s_region_lon unit="deg">10</s_region_lon>
+                <s_region_lat unit="deg">-5</s_region_lat>
+            </s_region_polygon_point>
+        </s_region>
+        <target_distance>
+            <target_distance_min unit="km">12e4</target_distance_min>
+            <target_distance_max unit="km">15e5</target_distance_max>            
+        </target_distance>
+        <sun_distance>
+            <sun_distance_min unit="AU">15</sun_distance_min>
+        </sun_distance>
+    </spatial_axes>
+    <dates>
+        <creation_date>2012-01-01</creation_date>
+        <modification_date>2018-07-25</modification_date>
+        <release_date>2019-01-01</release_date>
+    </dates>
+    <reference>
+        <bib_reference>
+            <bib_reference_bibcode>2008MNRAS.389..869E</bib_reference_bibcode>
+            <bib_reference_doi>10.1016/j.pss.2004.09.011</bib_reference_doi>
+        </bib_reference>
+        <internal_reference>urn:nasa:pds:cassini-huygens:mag</internal_reference>
+        <external_link>https://www.wikidata.org/wiki/Property:P819</external_link>        
+    </reference>
+</VESPA_EPNcore_Parameters>
