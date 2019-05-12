@@ -7,10 +7,10 @@ This VESPA/EPNcore LDD version proposes a nested architecture corresponding to V
 * added __min_/__max_ to _subsolar_longitude_, _subsolar_latitude_, _subobserver_longitude_, _subobserver_latitude_, _ra_, _dec_, _radial_distance_, _altitude_fromshape_
 * _bib_reference_ is described (and is validated) either as a _bibref_, a _doi_ or an _url_.
 * Detached extension classes: 
-** Particle_Spectroscopy_Extension_Parameters, 
-** Solar_System_Ojects_Extension_Parameters
-** Experimental_Spectroscopy_Extension_Parameters
-** APIS_Extension_Parameters
+  * Particle_Spectroscopy_Extension_Parameters, 
+  * Solar_System_Ojects_Extension_Parameters
+  * Experimental_Spectroscopy_Extension_Parameters
+  * APIS_Extension_Parameters
             
  # Current issues:
 * _c1*_, _c2*_, and _c3*_ not defined as the VESPA/EPNcore model
