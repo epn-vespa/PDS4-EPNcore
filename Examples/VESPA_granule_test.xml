@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="Ingest_LDD_VESPA_EPN_1x8000.sch" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<VESPA_EPNcore_Parameters xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://pds.nasa.gov/pds4/epn/v1"
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/epn/v1 Ingest_LDD_VESPA_EPN_1x8000.xsd">
+    <granule_uid>test</granule_uid>
+    <granule_gid>test</granule_gid>
+    <obs_id>test</obs_id>
+    <dataproduct_type>ts</dataproduct_type>
+    <measurement_type>phys.magField</measurement_type>
+    <processing_level>2</processing_level>
+    <target_name>Jupiter</target_name>
+    <target_class>planet</target_class>
+    <time_min unit="julian day">2455000.5</time_min>
+    <time_max unit="julian day">2455001.5</time_max>
+    <time_sampling_step_min unit="s">1</time_sampling_step_min>
+    <time_sampling_step_max unit="s">10</time_sampling_step_max>
+    <time_exp_min unit="s">5</time_exp_min>
+    <time_exp_max unit="s">5</time_exp_max>
+    <spectral_range_min unit="Hz">0.1</spectral_range_min>
+    <spectral_range_max unit="Hz">10</spectral_range_max>
+    <spectral_sampling_step_min unit="Hz">1</spectral_sampling_step_min>
+    <spectral_sampling_step_max unit="Hz">1</spectral_sampling_step_max>
+    <spectral_resolution_min unit="Hz">1</spectral_resolution_min>
+    <spectral_resolution_max unit="Hz">1</spectral_resolution_max>
+    <spatial_frame_type>body</spatial_frame_type>
+    <c1min>10</c1min>
+    <c1max>100</c1max>
+    <c2min>-5</c2min>
+    <c2max>5</c2max>
+    <c3min>100</c3min>
+    <c3max>10000</c3max>
+    <c1_resol_min>1</c1_resol_min>
+    <c1_resol_max>1</c1_resol_max>
+    <c2_resol_min>1</c2_resol_min>
+    <c2_resol_max>1</c2_resol_max>
+    <c3_resol_min>1</c3_resol_min>
+    <c3_resol_max>1</c3_resol_max>
+    <s_region>POLYGON UNKNOWN 10 -5 10 5 100 5 100 -5 10 -5</s_region>
+    <spatial_coordinate_description>Jupiter_III</spatial_coordinate_description>
+    <spatial_origin>Jupiter</spatial_origin>
+    <instrument_host_name>Cassini</instrument_host_name>
+    <instrument_name>MAG</instrument_name>
+    <creation_date>2012-01-10T00:00:00.000</creation_date>
+    <modification_date>2012-01-10T00:00:00.000</modification_date>
+    <release_date>2012-01-10T00:00:00.000</release_date>
+    <service_title>cassini_mag</service_title>
+    <target_distance_min unit="km">12e4</target_distance_min>
+    <target_distance_max unit="km">15e5</target_distance_max>
+</VESPA_EPNcore_Parameters>
