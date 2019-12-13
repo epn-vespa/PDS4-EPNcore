@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1A00.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<?xml-model href="http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1D00.sch" schematypens="http://purl.oclc.org/dsdl/schematron"?>
 
 <Ingest_LDD xmlns="http://pds.nasa.gov/pds4/pds/v1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1A00.xsd">
+    xsi:schemaLocation="http://pds.nasa.gov/pds4/pds/v1 http://pds.nasa.gov/pds4/pds/v1/PDS4_PDS_1D00.xsd">
     <name>EPN VESPA Local Dictionary 2.0</name>
-    <ldd_version_id>1-8.0.0</ldd_version_id>
+    <ldd_version_id>2.0</ldd_version_id>
     <full_name>Baptiste Cecconi</full_name>
     <steward_id>epn</steward_id>
     <namespace_id>epn</namespace_id>
@@ -32,7 +32,7 @@
         - when *_min and *_max values are equal, the user can select the corresponding *_value attribute instead of 
         the *_min and *_max attributes.
     </comment>
-    <last_modification_date_time>2018-07-22</last_modification_date_time>
+    <last_modification_date_time>2019-12-13</last_modification_date_time>
     
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -3754,7 +3754,7 @@
     <!-- time_axis classes -->
 
     <DD_Class> <!-- time_range class -->
-        <name>time_range</name>
+        <name>Time_Range</name>
         <version_id>2.0</version_id>
         <local_identifier>time_range</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -3789,7 +3789,7 @@
     </DD_Class>
     
     <DD_Class> <!-- time_sampling_step class -->
-        <name>time_sampling_step</name>
+        <name>Time_Sampling_Step</name>
         <version_id>2.0</version_id>
         <local_identifier>time_sampling_step</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -3824,7 +3824,7 @@
     </DD_Class>
  
     <DD_Class> <!-- time_exp class -->
-        <name>time_exp</name>
+        <name>Time_Exp</name>
         <version_id>2.0</version_id>
         <local_identifier>time_exp</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -3859,7 +3859,7 @@
      
     <DD_Class> <!-- time_axis class -->
         
-        <name>time_axis</name>
+        <name>Time_Axis</name>
         <version_id>2.0</version_id>
         <local_identifier>time_axis</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -3905,7 +3905,7 @@
     <!-- spectral_axis classes -->
     
     <DD_Class> <!-- spectral_range class -->
-        <name>spectral_range</name>
+        <name>Spectral_Range</name>
         <version_id>2.0</version_id>
         <local_identifier>spectral_range</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -3940,7 +3940,7 @@
     </DD_Class>
     
     <DD_Class> <!-- spectral_sampling_step class -->
-        <name>spectral_sampling_step</name>
+        <name>Spectral_Sampling_Step</name>
         <version_id>2.0</version_id>
         <local_identifier>spectral_sampling_step</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -3976,7 +3976,7 @@
     </DD_Class>
     
     <DD_Class> <!-- spectral_resolution class -->
-        <name>spectral_resolution</name>
+        <name>Spectral_Resolution</name>
         <version_id>2.0</version_id>
         <local_identifier>spectral_resolution</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4011,7 +4011,7 @@
     </DD_Class>
     
     <DD_Class> <!-- spectral_axis class -->
-        <name>spectral_axis</name>
+        <name>Spectral_Axis</name>
         <version_id>2.0</version_id>
         <local_identifier>spectral_axis</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4043,7 +4043,7 @@
     <!-- spatial_axes classes -->
         
     <DD_Class> <!-- celestial_frame_axes class -->
-        <name>celestial_frame_axes</name>
+        <name>Celestial_Frame_Axes</name>
         <version_id>2.0</version_id>
         <local_identifier>celestial_frame_axes</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4113,7 +4113,7 @@
     </DD_Class>
     
     <DD_Class> <!-- body_frame_axes class -->
-        <name>body_frame_axes</name>
+        <name>Body_Frame_Axes</name>
         <version_id>2.0</version_id>
         <local_identifier>body_frame_axes</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4185,7 +4185,7 @@
     </DD_Class>
 
     <DD_Class> <!-- cartesian_frame_axes class -->
-        <name>cartesian_frame_axes</name>
+        <name>Cartesian_Frame_Axes</name>
         <version_id>2.0</version_id>
         <local_identifier>cartesian_frame_axes</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4257,7 +4257,7 @@
     </DD_Class>
     
     <DD_Class> <!-- spherical_frame_axes class -->
-        <name>spherical_frame_axes</name>
+        <name>Spherical_Frame_Axes</name>
         <version_id>2.0</version_id>
         <local_identifier>spherical_frame_axes</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4329,7 +4329,7 @@
     </DD_Class>
     
     <DD_Class> <!-- cylindrical_frame_axes class -->
-        <name>cylindrical_frame_axes</name>
+        <name>Cylindrical_Frame_Axes</name>
         <version_id>2.0</version_id>
         <local_identifier>cylindrical_frame_axes</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4401,7 +4401,7 @@
     </DD_Class>
     
     <DD_Class> <!-- s_region polygon point class -->
-        <name>s_region_polygon_point</name>
+        <name>S_Region_Polygon_Point</name>
         <version_id>2.0</version_id>
         <local_identifier>s_region_polygon_point</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4424,7 +4424,7 @@
     </DD_Class>
     
     <DD_Class> <!-- s_region class -->
-        <name>s_region</name>
+        <name>S_Region</name>
         <version_id>2.0</version_id>
         <local_identifier>s_region</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4447,7 +4447,7 @@
     </DD_Class>
     
     <DD_Class> <!-- spatial_axes class -->
-        <name>spatial_axes</name>
+        <name>Spatial_Axes</name>
         <version_id>2.0</version_id>
         <local_identifier>spatial_axes</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4521,7 +4521,7 @@
     <!-- geometry classes -->
     
     <DD_Class> <!-- incidence_angle class -->
-        <name>incidence_angle</name>
+        <name>Incidence_Angle</name>
         <version_id>2.0</version_id>
         <local_identifier>incidence_angle</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4551,7 +4551,7 @@
     </DD_Class>
 
     <DD_Class> <!-- emergence_angle class -->
-        <name>emergence_angle</name>
+        <name>Emergence_Angle</name>
         <version_id>2.0</version_id>
         <local_identifier>emergence_angle</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4581,7 +4581,7 @@
     </DD_Class>
 
     <DD_Class> <!-- phase_angle class -->
-        <name>phase_angle</name>
+        <name>Phase_Angle</name>
         <version_id>2.0</version_id>
         <local_identifier>phase_angle</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4611,7 +4611,7 @@
     </DD_Class>
 
     <DD_Class> <!-- subsolar_point class -->
-        <name>subsolar_point</name>
+        <name>Subsolar_Point</name>
         <version_id>2.0</version_id>
         <local_identifier>subsolar_point</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4664,7 +4664,7 @@
     </DD_Class>
 
     <DD_Class> <!-- subobserver_point class -->
-        <name>subobserver_point</name>
+        <name>Subobserver_Point</name>
         <version_id>2.0</version_id>
         <local_identifier>subobserver_point</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4717,7 +4717,7 @@
     </DD_Class>
     
     <DD_Class> <!-- observation_geometry class -->
-        <name>observation_geometry</name>
+        <name>Observation_Geometry</name>
         <version_id>2.0</version_id>
         <local_identifier>observation_geometry</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4762,7 +4762,7 @@
     <!-- Other location classes -->
     
     <DD_Class> <!-- solar_longitude class -->
-        <name>solar_longitude</name>
+        <name>Solar_Longitude</name>
         <version_id>2.0</version_id>
         <local_identifier>solar_longitude</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4796,7 +4796,7 @@
     </DD_Class>
     
     <DD_Class> <!-- local_time class -->
-        <name>local_time</name>
+        <name>Local_Time</name>
         <version_id>2.0</version_id>
         <local_identifier>local_time</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4827,7 +4827,7 @@
     </DD_Class>
     
     <DD_Class> <!-- target_distance class -->
-        <name>target_distance</name>
+        <name>Target_Distance</name>
         <version_id>2.0</version_id>
         <local_identifier>target_distance</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4858,7 +4858,7 @@
     </DD_Class>
     
     <DD_Class> <!-- target_time class -->
-        <name>target_time</name>
+        <name>Target_Time</name>
         <version_id>2.0</version_id>
         <local_identifier>target_time</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4889,7 +4889,7 @@
     </DD_Class>
     
     <DD_Class> <!-- earth_distance class -->
-        <name>earth_distance</name>
+        <name>Earth_Distance</name>
         <version_id>2.0</version_id>
         <local_identifier>earth_distance</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4918,7 +4918,7 @@
     </DD_Class>
     
     <DD_Class> <!-- sun_distance class -->
-        <name>sun_distance</name>
+        <name>Sun_Distance</name>
         <version_id>2.0</version_id>
         <local_identifier>sun_distance</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4947,7 +4947,7 @@
     </DD_Class>
     
     <DD_Class> <!-- radial_distance class -->
-        <name>radial_distance</name>
+        <name>Radial_Distance</name>
         <version_id>2.0</version_id>
         <local_identifier>radial_distance</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -4977,7 +4977,7 @@
     </DD_Class>
     
     <DD_Class> <!-- altitude_fromshape class -->
-        <name>altitude_fromshape</name>
+        <name>Altitude_Fromshape</name>
         <version_id>2.0</version_id>
         <local_identifier>altitude_fromshape</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5007,7 +5007,7 @@
     </DD_Class>
     
     <DD_Class> <!-- ra_dec class -->
-        <name>ra_dec</name>
+        <name>Ra_Dec</name>
         <version_id>2.0</version_id>
         <local_identifier>ra_dec</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5058,7 +5058,7 @@
     </DD_Class>
     
     <DD_Class> <!-- other_location class -->
-        <name>other_location</name>
+        <name>Other_Location</name>
         <version_id>2.0</version_id>
         <local_identifier>other_location</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5132,7 +5132,7 @@
     <!-- access class -->
     
     <DD_Class> <!-- product_access class -->
-        <name>product_access</name>
+        <name>Product_Access</name>
         <version_id>2.0</version_id>
         <local_identifier>product_access</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5178,7 +5178,7 @@
     <!-- reference class -->
  
     <DD_Class> <!-- bib_reference -->
-        <name>bib_reference</name>
+        <name>Bib_Reference</name>
         <version_id>2.0</version_id>
         <local_identifier>bib_reference</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5194,7 +5194,7 @@
     </DD_Class>
 
     <DD_Class> <!-- product_reference class -->
-        <name>product_reference</name>
+        <name>Product_Reference</name>
         <version_id>2.0</version_id>
         <local_identifier>product_reference</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5233,7 +5233,7 @@
     <!-- dates class -->
     
     <DD_Class> <!-- product_dates class -->
-        <name>product_dates</name>
+        <name>Product_Dates</name>
         <version_id>2.0</version_id>
         <local_identifier>product_dates</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5264,7 +5264,7 @@
     <!-- particle_spectral_axes classes -->
     
     <DD_Class> <!-- particle_spectral_range -->
-        <name>particle_spectral_range</name>
+        <name>Particle_Spectral_Range</name>
         <version_id>2.0</version_id>
         <local_identifier>particle_spectral_range</local_identifier>
         <submitter_name>Baptiste Ceccconi</submitter_name>
@@ -5293,7 +5293,7 @@
     </DD_Class>
     
     <DD_Class> <!-- particle_spectral_sampling_step  -->
-        <name>particle_spectral_sampling_step</name>
+        <name>Particle_Spectral_Sampling_Step</name>
         <version_id>2.0</version_id>
         <local_identifier>particle_spectral_sampling_step</local_identifier>
         <submitter_name>Baptiste Ceccconi</submitter_name>
@@ -5322,7 +5322,7 @@
     </DD_Class>
 
     <DD_Class> <!-- particle_spectral_resolution -->
-        <name>particle_spectral_resolution</name>
+        <name>Particle_Spectral_Resolution</name>
         <version_id>2.0</version_id>
         <local_identifier>particle_spectral_resolution</local_identifier>
         <submitter_name>Baptiste Ceccconi</submitter_name>
@@ -5351,7 +5351,7 @@
     </DD_Class>
 
     <DD_Class> <!-- particle_pitch_angle_range -->
-        <name>particle_pitch_angle_range</name>
+        <name>Particle_Pitch_Angle_Range</name>
         <version_id>2.0</version_id>
         <local_identifier>particle_pitch_angle_range</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5382,7 +5382,7 @@
     </DD_Class>
  
     <DD_Class> <!-- particle_pitch_angle_sampling_step  -->
-        <name>particle_pitch_angle_sampling_step</name>
+        <name>Particle_Pitch_Angle_Sampling_Step</name>
         <version_id>2.0</version_id>
         <local_identifier>particle_pitch_angle_sampling_step</local_identifier>
         <submitter_name>Baptiste Ceccconi</submitter_name>
@@ -5411,7 +5411,7 @@
     </DD_Class>
     
     <DD_Class> <!-- particle_pitch_angle_bin_width -->
-        <name>particle_pitch_angle_bin_width</name>
+        <name>Particle_Pitch_Angle_Bin_Width</name>
         <version_id>2.0</version_id>
         <local_identifier>particle_pitch_angle_bin_width</local_identifier>
         <submitter_name>Baptiste Ceccconi</submitter_name>
@@ -5442,7 +5442,7 @@
     <!-- experimental_spectroscopy extension classes -->
     
     <DD_Class> <!-- azimuth -->
-        <name>azimuth</name>
+        <name>Azimuth</name>
         <version_id>2.0</version_id>
         <local_identifier>azimuth</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5465,7 +5465,7 @@
     </DD_Class>
 
     <DD_Class> <!-- grain_size -->
-        <name>grain_size</name>
+        <name>Grain_Size</name>
         <version_id>2.0</version_id>
         <local_identifier>grain_size</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5490,7 +5490,7 @@
     <!-- APIS extension classes -->
     
     <DD_Class> <!-- saturn_ephemeris -->
-        <name>saturn_ephemeris</name>
+        <name>Saturn_Ephemeris</name>
         <version_id>2.0</version_id>
         <local_identifier>saturn_ephemeris</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
@@ -5575,7 +5575,7 @@
     </DD_Class>
 
     <DD_Class> <!-- jupiter_ephemeris -->
-        <name>jupiter_ephemeris</name>
+        <name>Jupiter_Ephemeris</name>
         <version_id>2.0</version_id>
         <local_identifier>jupiter_ephemeris</local_identifier>
         <submitter_name>Baptiste Cecconi</submitter_name>
