@@ -35,7 +35,7 @@ jobs:
       - name: Download and install LDDtool version 12.0.0
         run: |
           cd lib
-          curl -O https://github.com/NASA-PDS/pds4-information-model/releases/download/12.0.0/lddtool-12.0.0-bin.tar.gz
+          curl -L -O https://github.com/NASA-PDS/pds4-information-model/releases/download/12.0.0/lddtool-12.0.0-bin.tar.gz
           tar -xvzf lddtool-12.0.0-bin.tar.gz
           PATH=${PATH}:`pwd`/bin
           cd ..
