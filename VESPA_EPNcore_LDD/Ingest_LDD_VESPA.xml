@@ -2516,6 +2516,21 @@
         </DD_Value_Domain>
     </DD_Attribute> 
 
+    <DD_Attribute> <!-- particle_spectral_range_value [extension] -->
+        <name>particle_spectral_range_value</name>
+        <version_id>2.0</version_id>
+        <local_identifier>particle_spectral_range_value</local_identifier>
+        <nillable_flag>true</nillable_flag>
+        <submitter_name>Baptiste Cecconi</submitter_name>
+        <definition>The particle_spectral_range_value parameter define the spectral domain location
+            for particles. Depending on the particle_spectral_type parameter, this quantity is expressed on an energy, 
+            mass, or mass/charge scale, with respective units eV, amu, or amu/qe.</definition>
+        <DD_Value_Domain>
+            <enumeration_flag>false</enumeration_flag>
+            <value_data_type>ASCII_Real</value_data_type>
+        </DD_Value_Domain>
+    </DD_Attribute>
+    
     <DD_Attribute> <!-- particle_spectral_range_min [extension] -->
         <name>particle_spectral_range_min</name>
         <version_id>2.0</version_id>
