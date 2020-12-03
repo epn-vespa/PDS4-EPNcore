@@ -1,0 +1,3 @@
+[submodule "pds4-information-model"]
+	path = pds4-information-model
+	url = https://github.com/NASA-PDS/pds4-information-model.git
