@@ -15,7 +15,7 @@
         in the EPN VESPA documentation, except the issues mentionned below. 
         
         Features:
-        - explict c1min, c1max, c2min, c2max, c3min and c3max coordinate names
+        - explict coordinate names (instead of c1, c2, c3)
         - single value specification enabled when range bounds are the same.
         - s_region is decomposed into pieces, making validation possible
         - added _min/_max to subsolar_longitude, subsolar_latitude, subobserver_longitude, subobserver_latitude, ra, 
@@ -26,14 +26,8 @@
             + Solar_System_Ojects_Extension_Parameters
             + Experimental_Spectroscopy_Extension_Parameters
             + APIS_Extension_Parameters
-            
-        Current issues:
-        - c1min, c1max, c2min, c2max, c3min and c3max not defined as the VESPA EPNcore model. Each axis is explicitely
-        defined, with proper names and units.
-        - when *_min and *_max values are equal, the user can select the corresponding *_value attribute instead of 
-        the *_min and *_max attributes.
     </comment>
-    <last_modification_date_time>2019-12-13</last_modification_date_time>
+    <last_modification_date_time>2020-12-03</last_modification_date_time>
     
     <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
@@ -2522,21 +2516,6 @@
         </DD_Value_Domain>
     </DD_Attribute> 
 
-    <DD_Attribute> <!-- particle_spectral_range_value [extension] -->
-        <name>particle_spectral_range_min</name>
-        <version_id>2.0</version_id>
-        <local_identifier>particle_spectral_range_value</local_identifier>
-        <nillable_flag>true</nillable_flag>
-        <submitter_name>Baptiste Cecconi</submitter_name>
-        <definition>The particle_spectral_range_value parameter define the spectral domain location
-            for particles. Depending on the particle_spectral_type parameter, this quantity is expressed on an energy, 
-            mass, or mass/charge scale, with respective units eV, amu, or amu/qe.</definition>
-        <DD_Value_Domain>
-            <enumeration_flag>false</enumeration_flag>
-            <value_data_type>ASCII_Real</value_data_type>
-        </DD_Value_Domain>
-    </DD_Attribute>
-    
     <DD_Attribute> <!-- particle_spectral_range_min [extension] -->
         <name>particle_spectral_range_min</name>
         <version_id>2.0</version_id>
@@ -3132,7 +3111,7 @@
         <nillable_flag>true</nillable_flag>
         <submitter_name>Baptiste Cecconi</submitter_name>
         <definition>Type of observation geometry, such as bidirectional, biconical, directional-hemispherical, 
-            etc</definition>
+            etc.</definition>
         <DD_Value_Domain>
             <enumeration_flag>false</enumeration_flag>
             <value_data_type>ASCII_Short_String_Collapsed</value_data_type>
