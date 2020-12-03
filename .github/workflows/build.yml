@@ -32,15 +32,22 @@ jobs:
         with:
           args: https://httpbin.org/get
 
-      - name: Download and install LDDtool version 12.0.0
+      # Download and install LDDtool version 12.0.0
+      - name: LDDtool-install
         run: |
           cd lib
           curl -L -O https://github.com/NASA-PDS/pds4-information-model/releases/download/12.0.0/lddtool-12.0.0-bin.tar.gz
           tar -xvzf lddtool-12.0.0-bin.tar.gz
           PATH=${PATH}:`pwd`/bin
           cd ..
-      # Runs a set of commands using the runners shell
-      - name: Test LDD tool version
-        run: |
-          lib/lddtool-12.0.0/bin/lddtool -v
           
+      # Testing LDDtool version
+      - name: LDDtool-version
+        run: |
+          lddtool -v
+          
+      # Running LDDtool on Ingest_LDD file
+      - name: LDDtool-ingest
+      - run: |
+          lddtool -lp VESPA_EPNcore_LDD/Ingest_LDD_VESPA.xml
+        
