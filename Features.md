@@ -1,4 +1,4 @@
-This VESPA/EPNcore LDD version proposes a nested architecture corresponding to VESPA/EPNcore attributes classification in the VESPA/EPNcore documentation, except for the _c1*_, _c2*_, and _c3*_ elements, that are replaced by explicit attribute names.
+This VESPA/EPNcore LDD version implements a nested architecture corresponding to VESPA/EPNcore attributes classification in the VESPA/EPNcore documentation, except for the _c1*_, _c2*_, and _c3*_ elements, that are replaced by explicit attribute names.
         
 # Features:
 * explict _c1*_, _c2*_, and _c3*_ coordinate names
@@ -15,4 +15,3 @@ This VESPA/EPNcore LDD version proposes a nested architecture corresponding to V
  # Current issues:
 * _c1*_, _c2*_, and _c3*_ not defined as the VESPA/EPNcore model. Each axis is explicitely defined, with proper names and units.
 * when _*_min_ and _*_max_ values are equal, the user can select the corresponding _*_value_ attribute instead of the _*_min_ and _*_max_ attributes.
-
