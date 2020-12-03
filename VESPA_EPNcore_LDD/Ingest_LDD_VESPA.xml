@@ -6373,7 +6373,7 @@
                 (epn:spatial_frame_type = 'body' and epn:body_frame_axes) or
                 (epn:spatial_frame_type = 'cartesian' and epn:cartesian_frame_axes) or
                 (epn:spatial_frame_type = 'spherical' and epn:spherical_frame_axes) or
-                (epn:spatial_frame_type = 'sylindrical' and epn:cylindrical_frame_axes)</rule_test>
+                (epn:spatial_frame_type = 'cylindrical' and epn:cylindrical_frame_axes)</rule_test>
             <rule_message>The *_frame_axes element corresponding to the spatial_frame_type must be present</rule_message>
         </DD_Rule_Statement>
     </DD_Rule>
