@@ -20,7 +20,7 @@
         - s_region is decomposed into pieces, making validation possible
         - added _min/_max to subsolar_longitude, subsolar_latitude, subobserver_longitude, subobserver_latitude, ra, 
         dec, radial_distance, altitude_fromshape
-        - bib_reference is described (and is validated) either as a bibref, a doi or an url.
+        - bib_reference is described (and is validated) either as a bibcode, a doi or an url.
         - Detached extension classes: 
             + Particle_Spectroscopy_Extension_Parameters, 
             + Solar_System_Ojects_Extension_Parameters
