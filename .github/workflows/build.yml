@@ -27,15 +27,27 @@ jobs:
           architecture: x64 # (x64 or x86) - defaults to x64
 
       # Runs a single command using the runners shell
-      - name: Download and install LDDtool version 12.0.0
+      - name: curl
+        uses: wei/curl@master
+        with:
+          args: https://httpbin.org/get
+
+      # Download and install LDDtool version 12.0.0
+      - name: LDDtool-install
         run: |
-          apt-get install curl
           cd lib
-          curl -O https://github.com/NASA-PDS/pds4-information-model/releases/download/12.0.0/lddtool-12.0.0-bin.tar.gz
+          curl -L -O https://github.com/NASA-PDS/pds4-information-model/releases/download/12.0.0/lddtool-12.0.0-bin.tar.gz
           tar -xvzf lddtool-12.0.0-bin.tar.gz
-          PATH=${PATH}:`pwd`/bin
-      # Runs a set of commands using the runners shell
-      - name: Test LDD tool version
-        run: |
-          lddtool -v
+          cd ..
           
+      # Testing LDDtool version
+      - name: LDDtool-version
+        run: |
+          lib/lddtool-12.0.0/bin/lddtool -v
+          
+      # Running LDDtool on Ingest_LDD file
+      - name: LDDtool-ingest
+        run: |
+          cd VESPA_EPNcore_LDD
+          ../lib/lddtool-12.0.0/bin/lddtool -lp Ingest_LDD_VESPA.xml
+        
