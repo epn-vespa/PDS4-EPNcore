@@ -48,6 +48,6 @@ jobs:
           
       # Running LDDtool on Ingest_LDD file
       - name: LDDtool-ingest
-      - run: |
+        run: |
           lddtool -lp VESPA_EPNcore_LDD/Ingest_LDD_VESPA.xml
         
