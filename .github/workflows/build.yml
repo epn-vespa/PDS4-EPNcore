@@ -27,9 +27,13 @@ jobs:
           architecture: x64 # (x64 or x86) - defaults to x64
 
       # Runs a single command using the runners shell
+      - name: curl
+        uses: wei/curl@master
+        with:
+          args: https://httpbin.org/get
+
       - name: Download and install LDDtool version 12.0.0
         run: |
-          apk add curl
           cd lib
           curl -O https://github.com/NASA-PDS/pds4-information-model/releases/download/12.0.0/lddtool-12.0.0-bin.tar.gz
           tar -xvzf lddtool-12.0.0-bin.tar.gz
